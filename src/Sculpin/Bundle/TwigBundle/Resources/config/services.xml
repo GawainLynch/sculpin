@@ -5,24 +5,22 @@
 
     <services>
 
-        <service id="sculpin_twig.flexible_extension_filesystem_loader" class="Sculpin\Bundle\TwigBundle\FlexibleExtensionFilesystemLoader" public="true">
-            <argument>%sculpin.source_dir%</argument>
-            <argument>%sculpin_twig.source_view_paths%</argument>
-            <argument>%sculpin_twig.view_paths%</argument>
+        <service id="sculpin_twig.filesystem_loader" class="Sculpin\Bundle\TwigBundle\FilesystemLoader">
+            <argument type="collection" />
+            <argument>%kernel.root_dir%%</argument>
             <argument>%sculpin_twig.extensions%</argument>
-            <tag name="kernel.event_subscriber" />
-            <tag name="sculpin.path_configurator" type="exclude" parameter="sculpin_twig.source_view_paths" />
-            <tag name="sculpin.custom_mime_extensions" type="text/twig" parameter="sculpin_twig.extensions" />
+            <tag name="twig.loader" />
         </service>
 
         <service id="sculpin_twig.array_loader" class="Twig\Loader\ArrayLoader">
             <argument type="collection" />
+            <tag name="twig.loader" />
         </service>
 
         <service id="sculpin_twig.loader" class="Twig\Loader\ChainLoader">
             <argument type="collection">
                 <argument type="service" id="sculpin_twig.array_loader" />
-                <argument type="service" id="sculpin_twig.flexible_extension_filesystem_loader" />
+                <argument type="service" id="sculpin_twig.filesystem_loader" />
             </argument>
         </service>
 
